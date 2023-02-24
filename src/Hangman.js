@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import img0 from "./0.jpg";
 import img1 from "./1.jpg";
 import img2 from "./2.jpg";
@@ -41,7 +41,6 @@ class Hangman extends Component {
       nWrong: st.nWrong + (st.answer.includes(ltr) ? 0 : 1)
     }));  
   }
- 
   /** generateButtons: return array of letter buttons to render */
   generateButtons() {
     return "abcdefghijklmnopqrstuvwxyz".split("").map(ltr => (
@@ -58,17 +57,18 @@ class Hangman extends Component {
 
   /** render: render game */
   render() {
-    const lostGame = this.state.nWrong < this.props.maxWrong;
+    const lostGame = this.state.nWrong >= this.props.maxWrong;
+    const altText = `${this.state.nWrong}/${this.props.maxWrong} guesses`
     return (
       <div className='Hangman'>
         <h1>Hangman</h1>
-        <img src={this.props.images[this.state.nWrong]} />
+        <img src={this.props.images[this.state.nWrong]} alt={altText}/>
         <p>Number of wrong guesses:{this.state.nWrong}</p>
 
-        <p className='Hangman-word'>{lostGame ? this.guessedWord() : this.state.answer}</p>
-        <p className='Hangman-btns'>{lostGame ? this.generateButtons() : `YOU LOST`}</p>
+        <p className='Hangman-word'>{!lostGame ? this.guessedWord() : this.state.answer}</p>
+        <p className='Hangman-btns'>{!lostGame ? this.generateButtons()  : `YOU LOST` }</p>
         
-
+      
       </div>
     );
   }
